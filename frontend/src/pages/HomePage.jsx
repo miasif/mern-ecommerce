@@ -2,7 +2,7 @@ import products from "../../products";
 import { Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
 
-function HomePages() {
+function HomePage() {
   return (
     <div>
       <h1>Latest Products</h1>
@@ -17,4 +17,4 @@ function HomePages() {
   );
 }
 
-export default HomePages;
+export default HomePage;
