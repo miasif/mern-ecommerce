@@ -1,0 +1,32 @@
+{
+  "name": "MERN Ecom",
+  "version": "1.0.0",
+  "description": "eCommerce application built with the MERN stack",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/index.js",
+    "server": "nodemon backend/index.js",
+    "client": "npm start --prefix frontend",
+    "dev": " concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miasif/mern-ecommerce.git"
+  },
+  "author": "asif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miasif/mern-ecommerce/issues"
+  },
+  "homepage": "https://github.com/miasif/mern-ecommerce#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1"
+  }
+}
