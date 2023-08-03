@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useParams } from "react-router-dom";
 import products from "../../products";
 import {
@@ -11,16 +10,32 @@ import {
   Row,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
+import { useGetProductDetailsQuery } from "../redux/slices/productSlice";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 function ProductDetailsPage() {
   const { id: productId } = useParams();
-  const product = products.find((p) => p._id === productId);
-  // console.log(product);
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useGetProductDetailsQuery(productId);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error || !Array.isArray(products)) {
+    return <Message variant="danger">Error: Unable to fetch data.</Message>;
+  }
+
   return (
     <>
       <Link className="btn btn-light my-3 " to="/">
         Go back
       </Link>
+
       <Row>
         <Col md={5}>
           <Image src={product.image} alt={product.name} fluid />
