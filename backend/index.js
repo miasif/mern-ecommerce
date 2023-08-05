@@ -4,9 +4,16 @@ import cors from "cors";
 dotenv.config();
 import connectDB from "./config/db.js";
 import productRoutes from "./routes/product.js";
+import userRoutes from "./routes/user.js";
+import cookieParser from "cookie-parser";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+
 const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Allow requests from the specified origin
 const allowedOrigins = ["http://127.0.0.1:5173", "http://localhost:5000"]; // Add more origins if needed
@@ -26,14 +33,10 @@ app.get("/", (req, res) => {
   res.send("api working");
 });
 
-// app.get("/api/products", (req, res) => {
-//   res.json(products);
-// });
 app.use("/api/products", productRoutes);
-// app.get("/api/products/:id", (req, res) => {
-//   const product = products.find((p) => p._id === req.params.id);
-//   res.json(product);
-// });
+app.use("/api/user", userRoutes);
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () =>
   console.log(`Server running on http://localhost:${port}`)
