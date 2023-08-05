@@ -1,6 +1,5 @@
 import User from "../models/User.js";
-import Product from "../models/User.js";
-import jwt from "jsonwebtoken";
+import generateToken from "../utils/generateToken.js";
 
 const authUser = async (req, res) => {
   try {
@@ -8,16 +7,8 @@ const authUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      });
+      generateToken(res, user._id);
 
-      res.cookie("jwt", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        sameSite: "strict",
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      });
       res.json({
         _id: user._id,
         name: user.name,
@@ -33,7 +24,32 @@ const authUser = async (req, res) => {
     throw new Error("Something went wrong");
   }
 };
-const registerUser = async (req, res) => {};
+const registerUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+  if (user) {
+    generateToken(res, user._id);
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: email,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data ");
+  }
+};
 const logoutUser = async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -42,9 +58,41 @@ const logoutUser = async (req, res) => {
   res.status(200).json({ message: "Log out successfully" });
 };
 const getUserProfile = async (req, res) => {
-  res.send("profile");
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      res.status(200).json({
+        user,
+      });
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error("User not found");
+  }
 };
-const updateUserProfile = async (req, res) => {};
+const updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+      const updateUser = await user.save();
+      res.status(200).json({
+        updateUser,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+};
 const getUsers = async (req, res) => {
   res.send("getUsers");
 };
