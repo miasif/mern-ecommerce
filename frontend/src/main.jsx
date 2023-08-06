@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./assets/styles/bootstrap.custom.css";
 import "./assets/styles/index.css";
+
 import {
   Route,
   RouterProvider,
@@ -15,6 +16,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage.jsx";
 import { Provider } from "react-redux";
 import store from "./store.js";
 import CartPage from "./pages/CartPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +24,7 @@ const router = createBrowserRouter(
       <Route index={true} path="/" element={<HomePage />} />
       <Route path="/product/:id" element={<ProductDetailsPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Route>
   )
 );
