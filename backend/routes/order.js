@@ -10,11 +10,11 @@ import {
 } from "../controllers/OrderController.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
 
-router.post("/add-order-items", protect, admin, addOrderItems);
+router.route("/").post(protect, addOrderItems).get(protect, admin, getOrders);
 router.get("/my-orders", protect, getMyOrders);
 router.get("/:id", protect, getOrderById);
 router.get("/:id/deliver", protect, admin, updateOrderToDelivered);
 router.get("/:id/pay", protect, admin, updateOrderToPaid);
-router.get("/", protect, admin, getOrders);
+// router.get("/", protect, admin, getOrders);
 
 export default router;
