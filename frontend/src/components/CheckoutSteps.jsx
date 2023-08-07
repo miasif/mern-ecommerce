@@ -1,4 +1,3 @@
-import React from "react";
 import { Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
@@ -37,7 +36,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
 
       <Nav.Item>
         {step4 ? (
-          <LinkContainer to="/placeorder">
+          <LinkContainer to="/placeOrder">
             <Nav.Link>Place Order</Nav.Link>
           </LinkContainer>
         ) : (
