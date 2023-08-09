@@ -16,20 +16,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 
 // Allow requests from the specified origin
-const allowedOrigins = ["http://127.0.0.1:5173", "http://localhost:5000"]; // Add more origins if needed
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  })
-);
 
 app.get("/", (req, res) => {
   res.send("api working");

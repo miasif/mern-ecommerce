@@ -2,6 +2,7 @@ import Order from "../models/Order.js";
 
 const addOrderItems = async (req, res) => {
   const {
+    user,
     orderItems,
     shippingAddress,
     paymentMethod,
@@ -10,6 +11,7 @@ const addOrderItems = async (req, res) => {
     shippingPrice,
     totalPrice,
   } = req.body;
+  // console.log(user);
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No Order Items");
@@ -20,7 +22,7 @@ const addOrderItems = async (req, res) => {
         product: x._id,
         _id: undefined,
       })),
-      user: req.user._id,
+      user: user?._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
