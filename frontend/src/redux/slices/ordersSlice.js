@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-import { ORDERS_URL } from "../actionTypes";
+import { ORDERS_URL, PAYPAL_URL } from "../actionTypes";
 import Cookies from "js-cookie";
 
 export const orderApiSlice = apiSlice.injectEndpoints({
@@ -21,11 +21,30 @@ export const orderApiSlice = apiSlice.injectEndpoints({
           Authorization: "Bearer " + Cookies.get("jwt"),
         },
       }),
-
+      keepUnusedDataFor: 5,
+    }),
+    payOrder: builder.mutation({
+      query: ({ orderId, details }) => ({
+        url: `${ORDERS_URL}/${orderId}/pay`,
+        headers: {
+          Authorization: "Bearer " + Cookies.get("jwt"),
+        },
+        method: "PUT",
+        body: details,
+      }),
+    }),
+    getPaypalClientId: builder.query({
+      query: () => ({
+        url: PAYPAL_URL,
+      }),
       keepUnusedDataFor: 5,
     }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrderDetailsQuery } =
-  orderApiSlice;
+export const {
+  useCreateOrderMutation,
+  useGetOrderDetailsQuery,
+  usePayOrderMutation,
+  useGetPaypalClientIdQuery,
+} = orderApiSlice;

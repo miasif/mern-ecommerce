@@ -1,13 +1,51 @@
 import { Link, useParams } from "react-router-dom";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { useGetOrderDetailsQuery } from "../redux/slices/ordersSlice";
+import { useSelector } from "react-redux";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import {
+  useGetOrderDetailsQuery,
+  usePayOrderMutation,
+  useGetPaypalClientIdQuery,
+} from "../redux/slices/ordersSlice";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const OrderPage = () => {
   const { id: orderId } = useParams();
-
   const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
+  console.log(orderId);
+
+  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+  const {
+    data: paypal,
+    isLoading: loadingPayPal,
+    error: errorPayPal,
+    refetch,
+  } = useGetPaypalClientIdQuery();
+
+  useEffect(() => {
+    if (!errorPayPal && !loadingPayPal && paypal.clientId) {
+      const loadPaypalScript = async () => {
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": paypal.clientId,
+            currency: "USD",
+          },
+        });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+      };
+      if (order && !order.isPaid) {
+        if (!window.paypal) {
+          loadPaypalScript();
+        }
+      }
+    }
+  }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
   return isLoading ? (
     <Loader />
@@ -119,6 +157,7 @@ const OrderPage = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+
               {/* PAY ORDER PLACEHOLDER */}
               {/* {MARK AS DELIVERED PLACEHOLDER} */}
             </ListGroup>
