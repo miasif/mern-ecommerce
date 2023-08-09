@@ -29,7 +29,7 @@ const PlaceOrderPage = () => {
   const dispatch = useDispatch();
   const placeOrderHandler = async () => {
     try {
-      console.log(userInfo);
+      // console.log(userInfo);
       const res = await createOrder({
         user: userInfo,
         orderItems: cart.cartItems,
