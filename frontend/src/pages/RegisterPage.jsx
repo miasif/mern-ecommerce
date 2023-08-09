@@ -5,24 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 
-import { useRegisterMutation } from "../redux/slices/usersSlice";
+import { useRegisterMutation } from "../redux/slices/userSlice";
 import { setCredentials } from "../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
-const RegisterPage = () => {
+const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [register, { isLoading }] = useRegisterMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
   const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const redirect = searchParams.get("redirect") || "/";
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get("redirect") || "/";
 
   useEffect(() => {
     if (userInfo) {
@@ -32,8 +34,9 @@ const RegisterPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
-      toast.error("Password do not match");
+      toast.error("Passwords do not match");
     } else {
       try {
         const res = await register({ name, email, password }).unwrap();
@@ -47,8 +50,7 @@ const RegisterPage = () => {
 
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
-
+      <h1>Register</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="my-2" controlId="name">
           <Form.Label>Name</Form.Label>
@@ -79,12 +81,11 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-
         <Form.Group className="my-2" controlId="confirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter Confirm Password"
+            placeholder="Confirm password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
@@ -99,7 +100,7 @@ const RegisterPage = () => {
 
       <Row className="py-3">
         <Col>
-          Already Have an account?
+          Already have an account?{" "}
           <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
             Login
           </Link>
@@ -109,4 +110,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default RegisterScreen;

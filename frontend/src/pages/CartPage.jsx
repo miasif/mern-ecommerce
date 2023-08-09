@@ -1,30 +1,30 @@
-import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Form,
   Button,
   Card,
-  Col,
-  FormControl,
-  Image,
-  ListGroup,
-  ListGroupItem,
-  Row,
 } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import Message from "../components/Message";
 import { FaTrash } from "react-icons/fa";
+import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../redux/slices/cartSlice";
 
-function CartPage() {
-  const dispatch = useDispatch();
+const CartPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
   const addToCartHandler = async (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
   };
 
-  const removeFromCartHandler = async (id) => {
+  const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
   };
 
@@ -43,7 +43,7 @@ function CartPage() {
         ) : (
           <ListGroup variant="flush">
             {cartItems.map((item) => (
-              <ListGroupItem key={item._id}>
+              <ListGroup.Item key={item._id}>
                 <Row>
                   <Col md={2}>
                     <Image src={item.image} alt={item.name} fluid rounded />
@@ -51,10 +51,9 @@ function CartPage() {
                   <Col md={3}>
                     <Link to={`/product/${item._id}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}> {item.price} </Col>
+                  <Col md={2}>${item.price}</Col>
                   <Col md={2}>
-                    {" "}
-                    <FormControl
+                    <Form.Control
                       as="select"
                       value={item.qty}
                       onChange={(e) =>
@@ -66,9 +65,8 @@ function CartPage() {
                           {x + 1}
                         </option>
                       ))}
-                    </FormControl>
+                    </Form.Control>
                   </Col>
-
                   <Col md={2}>
                     <Button
                       type="button"
@@ -79,7 +77,7 @@ function CartPage() {
                     </Button>
                   </Col>
                 </Row>
-              </ListGroupItem>
+              </ListGroup.Item>
             ))}
           </ListGroup>
         )}
@@ -87,31 +85,31 @@ function CartPage() {
       <Col md={4}>
         <Card>
           <ListGroup variant="flush">
-            <ListGroupItem>
+            <ListGroup.Item>
               <h2>
-                SubTotal(
-                {cartItems.reduce((acc, item) => acc + item.qty, 0)}) items
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                items
               </h2>
               $
               {cartItems
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
-            </ListGroupItem>
-            <ListGroupItem>
+            </ListGroup.Item>
+            <ListGroup.Item>
               <Button
-                type="button "
+                type="button"
                 className="btn-block"
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
                 Proceed To Checkout
               </Button>
-            </ListGroupItem>
+            </ListGroup.Item>
           </ListGroup>
         </Card>
       </Col>
     </Row>
   );
-}
+};
 
 export default CartPage;

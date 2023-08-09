@@ -6,15 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Loader from "../components/Loader";
-import { useCreateOrderMutation } from "../redux/slices/ordersSlice";
+import { useCreateOrderMutation } from "../redux/slices/orderSlice";
 import { clearCartItems } from "../redux/slices/cartSlice";
-import { setCredentials } from "../redux/slices/authSlice";
 
-const PlaceOrderPage = () => {
+const PlaceOrderScreen = () => {
   const navigate = useNavigate();
 
   const cart = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.auth);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
@@ -29,9 +27,7 @@ const PlaceOrderPage = () => {
   const dispatch = useDispatch();
   const placeOrderHandler = async () => {
     try {
-      // console.log(userInfo);
       const res = await createOrder({
-        user: userInfo,
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -132,11 +128,9 @@ const PlaceOrderPage = () => {
                   <Col>${cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {/* <ListGroup.Item>
-                {error && (
-                  <Message variant="danger">{error.data.message}</Message>
-                )}
-              </ListGroup.Item> */}
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
               <ListGroup.Item>
                 <Button
                   type="button"
@@ -156,4 +150,4 @@ const PlaceOrderPage = () => {
   );
 };
 
-export default PlaceOrderPage;
+export default PlaceOrderScreen;

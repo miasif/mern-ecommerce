@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 
-import { useLoginMutation } from "../redux/slices/usersSlice";
+import { useLoginMutation } from "../redux/slices/userSlice";
 import { setCredentials } from "../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
-const LoginPage = () => {
+const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,8 +21,8 @@ const LoginPage = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
-  const redirect = searchParams.get("redirect") || "/";
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get("redirect") || "/";
 
   useEffect(() => {
     if (userInfo) {
@@ -85,4 +85,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginScreen;

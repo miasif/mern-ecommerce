@@ -1,40 +1,30 @@
 {
-  "name": "MERN Ecom",
-  "version": "1.0.0",
-  "description": "eCommerce application built with the MERN stack",
+  "name": "proshop2",
+  "version": "2.0.0",
   "type": "module",
-  "main": "index.js",
+  "description": "Ecommerce application built with the MERN stack",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/index.js",
-    "server": "nodemon backend/index.js",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
-    "dev": " concurrently \"npm run server\" \"npm run client\"",
-    "data:import": "node backend/seeder.js",
-    "data:destroy": "node backend/seeder.js -d"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/miasif/mern-ecommerce.git"
-  },
-  "author": "asif",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/miasif/mern-ecommerce/issues"
-  },
-  "homepage": "https://github.com/miasif/mern-ecommerce#readme",
+  "author": "Brad Traversy",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.1",
-    "moongose": "^1.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.1"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
-    "dotenv": "^16.3.1",
-    "nodemon": "^3.0.1"
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.21"
   }
 }
