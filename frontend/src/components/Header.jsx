@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../redux/slices/userSlice";
-import { logout } from "../slices/authSlice";
+import { logout } from "../redux/slices/authSlice";
 import logo from "../assets/logo.png";
 
 const Header = () => {
@@ -31,10 +31,7 @@ const Header = () => {
       <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>
-              <img src={logo} />
-              ProShop
-            </Navbar.Brand>
+            <Navbar.Brand>MERN Ecom</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
