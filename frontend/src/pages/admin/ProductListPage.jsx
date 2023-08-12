@@ -16,7 +16,6 @@ function ProductListPage() {
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
 
-  //   console.log(products);
   const deleteHandler = () => {};
   const createProductHandler = async () => {
     if (window.confirm("Are you sure you want to create a new product?")) {
@@ -55,6 +54,8 @@ function ProductListPage() {
               <th>PRICE</th>
               <th>CATEGORY</th>
               <th>BRAND</th>
+              <th>STOCK</th>
+
               <th>ACTION</th>
 
               <th></th>
@@ -68,6 +69,8 @@ function ProductListPage() {
                 <td>{product.price}</td>
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
+                <td>{product.countInStock}</td>
+
                 <td>
                   <LinkContainer to={`/admin/product/${product._id}/edit`}>
                     <Button variant="light" className="btn-sm mx-2">
