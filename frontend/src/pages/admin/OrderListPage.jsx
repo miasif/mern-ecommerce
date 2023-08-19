@@ -26,9 +26,7 @@ function OrderListPage() {
               <th>TOTAL</th>
               <th>PAID</th>
               <th>DELIVERED</th>
-              <th>Details</th>
-
-              <th></th>
+              <th>ACTION</th>
             </tr>
           </thead>
           <tbody>
